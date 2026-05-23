@@ -1,0 +1,12 @@
+Linse 1 | top | Heatup_Gruppe_3 (Heatup) (Fehler: ?% / MAE: 36.698): 0.21720508/t_skaliert
+Linse 1 | bottom | Heatup_Gruppe_3 (Heatup) (Fehler: ?% / MAE: 5.782): -1*(-1.1179221) + sin(z*0.23561512/t_skaliert)/(0.44945133*(0.13820277 - r))
+Linse 1 | lateral | Heatup_Gruppe_3 (Heatup) (Fehler: ?% / MAE: 1.785): log(t_skaliert)
+Linse 1 | support | Heatup_Gruppe_3 (Heatup) (Fehler: ?% / MAE: 211.718): log(t_skaliert)*Abs(279.5235 - (Abs(log(t_skaliert)) + 30.448647)/r)/r
+Linse 2 | top | Heatup_Gruppe_3 (Heatup) (Fehler: ?% / MAE: 1.724): r*(Abs(x + 0.36183098/((t_skaliert/r))) - 1*69.18137) - sin(r)
+Linse 2 | bottom | Heatup_Gruppe_3 (Heatup) (Fehler: ?% / MAE: 17.625): r*(r*41.793438 - 1*2.7781503)/t_skaliert
+Linse 2 | lateral | Heatup_Gruppe_3 (Heatup) (Fehler: ?% / MAE: 8.412): -4.10857872470292*log(0.0855708616155727*t_skaliert**2 + z) - 18.9388909310808
+Linse 2 | support | Heatup_Gruppe_3 (Heatup) (Fehler: ?% / MAE: 282.776): (-6469.647 + 884.92993/r)*(112.80075 - 1*(-156.68265) - 37.974842/r)*exp(t_skaliert*(-79.26056)) - 1*298.47638
+Linse 3 | top | Heatup_Gruppe_3 (Heatup) (Fehler: ?% / MAE: 3.082): -74.88289 + (log(z) + 5.327201)/z
+Linse 3 | bottom | Heatup_Gruppe_3 (Heatup) (Fehler: ?% / MAE: 3.262): 2.538691*log(t_skaliert) + 15.532099
+Linse 3 | lateral | Heatup_Gruppe_3 (Heatup) (Fehler: ?% / MAE: 68.407): -4377.4883 + 66.83679/r
+Linse 3 | support | Heatup_Gruppe_3 (Heatup) (Fehler: ?% / MAE: 64.645): -0.7898781/t_skaliert + (log(t_skaliert) - 4.5298605)/r

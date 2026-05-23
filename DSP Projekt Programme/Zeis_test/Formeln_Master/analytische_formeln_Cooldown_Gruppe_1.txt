@@ -1,0 +1,12 @@
+Linse 1 | top | Cooldown_Gruppe_1 (Cooldown) (Fehler: ?% / MAE: 0.269): -7.6286507*r - log(exp(t_skaliert) - 7.7885976*sin(r)) + 0.5368469
+Linse 1 | bottom | Cooldown_Gruppe_1 (Cooldown) (Fehler: ?% / MAE: 0.532): log(1.806197 - 13.046358*r)
+Linse 1 | lateral | Cooldown_Gruppe_1 (Cooldown) (Fehler: ?% / MAE: 0.293): (3.8024642 - 139.60121*z)*(-3.3309689) - sin(t_skaliert) - (-1.9133546)*Abs(t_skaliert - 1*z*233.07605 + 5.824924)
+Linse 1 | support | Cooldown_Gruppe_1 (Cooldown) (Fehler: ?% / MAE: 12.772): 22.53993*t_skaliert + 22.53993*log(z) + 22.53993*sin(384.431448952886*r) + 62.71926
+Linse 2 | top | Cooldown_Gruppe_1 (Cooldown) (Fehler: ?% / MAE: 0.463): (81.9597897075716*r - 1.5041533*sin(99.2808689538199*r) - 0.62303615)/((2*t_skaliert + 0.84105694)*log(r))
+Linse 2 | bottom | Cooldown_Gruppe_1 (Cooldown) (Fehler: ?% / MAE: 0.110): (t_skaliert - 0.19346847 - 0.017577391/(z - (r - 1*0.13636012)))/exp(t_skaliert)
+Linse 2 | lateral | Cooldown_Gruppe_1 (Cooldown) (Fehler: ?% / MAE: 1.032): t_skaliert - sin(-5.340317 - (-1)*7.1036415/r) - 2.3305438
+Linse 2 | support | Cooldown_Gruppe_1 (Cooldown) (Fehler: ?% / MAE: 56.909): -(-115.847855)*t_skaliert - 119.72533
+Linse 3 | top | Cooldown_Gruppe_1 (Cooldown) (Fehler: ?% / MAE: 0.187): r*z*log(t_skaliert)/(-r + z + 0.0073699136)
+Linse 3 | bottom | Cooldown_Gruppe_1 (Cooldown) (Fehler: ?% / MAE: 0.961): exp(y)/(t_skaliert + 0.24975999)
+Linse 3 | lateral | Cooldown_Gruppe_1 (Cooldown) (Fehler: ?% / MAE: 6.585): 1.824687*log(t_skaliert)
+Linse 3 | support | Cooldown_Gruppe_1 (Cooldown) (Fehler: ?% / MAE: 4.691): -0.8131903/(t_skaliert + 0.008744263)
