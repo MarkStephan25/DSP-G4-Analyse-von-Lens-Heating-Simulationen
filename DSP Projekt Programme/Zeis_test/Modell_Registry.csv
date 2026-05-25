@@ -1,0 +1,49 @@
+Gruppe;Phase;Linse;Surface;Trainings_MAE;Echter_MAE;Abweichung;MAPE_%;Formel
+Heatup_Gruppe_2;Heatup;2;support;243.783;243.315;0.468;56.11;-1.8743222*log(1.2407291 + z/t_skaliert)/(r - 0.13136132) + 0.8306592/t_skaliert
+Heatup_Gruppe_3;Heatup;2;support;235.307;235.691;0.384;61.79;log(t_skaliert)**3/sin(47.85833*r) - 191.89705 + 1.0430115/t_skaliert
+Heatup_Gruppe_1;Heatup;2;support;199.991;199.923;0.068;72.19;(27.581163 - 0.11513673/(r - 0.13128643))*log(t_skaliert)**2 - 245.59538
+Heatup_Gruppe_3;Heatup;1;support;122.333;122.093;0.24;22.5;-(0.14740705/z - 0.7812252/t_skaliert) - 0.3546219/((r - 47.931236*z)*(t_skaliert + z))
+Heatup_Gruppe_2;Heatup;1;support;118.405;118.957;0.552;21.4;-r/z + 1.5252997*log(t_skaliert)/((t_skaliert + 0.0040739668)*sin(1.7357047/r)) + 0.8136568/t_skaliert
+Heatup_Gruppe_1;Heatup;1;support;115.058;114.68;0.378;19.16;(sin(4.0255613/((-0.46264267)*r)) - 5.3035054)/(t_skaliert - z + 0.0028201672) - 1*129.93605
+Heatup_Gruppe_2;Heatup;3;support;57.427;57.031;0.396;8.68;90.32441*log(t_skaliert) - 214.78864692329 - 0.68770530885166/t_skaliert
+Heatup_Gruppe_1;Heatup;3;lateral;55.503;55.717;0.214;113.41;-4466.1836 - (sin((-x + y/0.2694152)/r) - 68.08289)/r
+Heatup_Gruppe_3;Heatup;3;lateral;53.501;53.815;0.314;109.39;sin((x + y)*(-171.56647))/(-0.012451213) - 1*4771.7827 + 72.87063/r
+Heatup_Gruppe_2;Heatup;3;lateral;51.129;51.131;0.002;106.55;-4454.952 + (t_skaliert + sin((x + y)*173.30826) + 67.8322)/r
+Heatup_Gruppe_1;Heatup;3;support;47.099;46.959;0.14;8.28;t_skaliert*442.55365 - (-123.76147)*x/y - (554.9273 - 16896.93*x) + (-1*1.2988927 + 0.0002914634/t_skaliert)/t_skaliert
+Heatup_Gruppe_2;Heatup;2;lateral;46.198;46.699;0.501;154.58;0.08744236/t_skaliert
+Cooldown_Gruppe_1;Cooldown;2;support;41.557;41.593;0.036;48.23;80.36794/(exp(t_skaliert)*sin(4.943137/r))
+Heatup_Gruppe_3;Heatup;3;support;41.357;41.495;0.138;6.46;-Abs(Abs(50.258465 + 0.7473085/y) + 0.42332375/(x - y)) - 167.7873/(t_skaliert + 0.34636638) + (-1.3256909 - (-1)*0.00028667404/t_skaliert)/t_skaliert
+Heatup_Gruppe_2;Heatup;1;top;17.447;17.448;0.001;44.21;Abs(Abs(75.12318 + 0.387120336085488*(sin(0.6506192/(t_skaliert - z)) - 1.0045699)/t_skaliert) - 60.438858)
+Heatup_Gruppe_1;Heatup;2;bottom;14.258;14.249;0.009;77.37;z/t_skaliert
+Heatup_Gruppe_3;Heatup;1;top;13.869;13.878;0.009;36.0;Abs(Abs(Abs(r*5.592005*sin(z*433.458)/t_skaliert + sin(z*(-569.83545))*(-84.724815)) - 1*41.985653) - 1*21.171425)
+Heatup_Gruppe_1;Heatup;2;top;13.603;13.644;0.041;84.74;(0.10455424 - r)/t_skaliert
+Heatup_Gruppe_1;Heatup;1;top;13.08;13.081;0.001;33.7;r*(-76.35968 + 2.7995095/z)/(t_skaliert + 0.002694043)
+Heatup_Gruppe_3;Heatup;2;bottom;12.587;12.583;0.004;89.0;(Abs(y) + Abs(sin(z/0.028671646) - 0.34908447) - 0.6563067)*(-0.7003073)/t_skaliert
+Heatup_Gruppe_2;Heatup;2;bottom;12.42;12.429;0.009;37.35;(-(-3.4998274)*Abs(0.64183545 - sin((-4.6742578*t_skaliert + exp(r))*55.518612)) - 0.8111972)/((t_skaliert/r))
+Cooldown_Gruppe_1;Cooldown;1;support;12.276;12.271;0.005;16.45;63.290794/sin(z*(-1273.4192))
+Heatup_Gruppe_3;Heatup;2;lateral;7.779;7.764;0.015;78.57;-6.576312 + 0.07014828/(t_skaliert + z)
+Heatup_Gruppe_1;Heatup;2;lateral;7.351;7.349;0.002;85.38;sin(4.4808526/r)*0.05520432/t_skaliert
+Heatup_Gruppe_2;Heatup;1;bottom;7.3;7.304;0.004;56.56;r*(z*102.17595 - sin(z*(-474.3017)))/t_skaliert
+Heatup_Gruppe_1;Heatup;1;lateral;6.721;6.708;0.013;38.83;exp(z/0.0014677112)*1.6476909e-8/(t_skaliert + 0.007932418)
+Heatup_Gruppe_3;Heatup;1;bottom;5.627;5.63;0.003;46.96;r*sin(z*331.8845)/(t_skaliert + 0.00077474845)
+Cooldown_Gruppe_1;Cooldown;3;lateral;3.828;3.848;0.02;32.17;(-sin(1.2514539/r) + sin((-x + y/0.17649862)/0.023801938))*(-0.30247408)/(t_skaliert + 0.015836861)
+Cooldown_Gruppe_1;Cooldown;3;support;3.74;3.726;0.014;11.43;(sin(x*10.920252/r) - 7.16771)/(t_skaliert/0.110828355 - 1*(-0.07536908))
+Heatup_Gruppe_1;Heatup;3;bottom;3.1;3.11;0.01;92.4;log(44.5563938692541*t_skaliert)
+Heatup_Gruppe_2;Heatup;3;bottom;2.935;2.942;0.007;23.88;(3.015942 - t_skaliert)*(log(t_skaliert) + 6.0776634)
+Heatup_Gruppe_3;Heatup;3;bottom;2.827;2.853;0.026;23.59;(2.9628282 - t_skaliert)*(log(t_skaliert) + 6.057054)
+Heatup_Gruppe_1;Heatup;1;bottom;2.72;2.718;0.002;48.22;(sin(log(t_skaliert)) + 1.7529365)*log(Abs(Abs(exp(444.2595*z) - 1.7429214) - 0.52253324))
+Heatup_Gruppe_3;Heatup;3;top;2.533;2.532;0.001;64.42;5.04560928053043*log(Abs(sin(366.00815*z + 9.260453*Abs(y - 0.010374305*z/(y + z)))))
+Heatup_Gruppe_1;Heatup;3;top;2.508;2.501;0.007;51.28;r*(Abs(sin(y/0.007828859 + 0.8941497)) - 0.29891884)/(r - 1*0.015732506)
+Heatup_Gruppe_2;Heatup;2;top;2.401;2.409;0.008;25.87;r*(-79.95441)*exp(-0.003073837/t_skaliert)
+Heatup_Gruppe_2;Heatup;3;top;2.179;2.169;0.01;53.32;0.244710658644366*(sin(178.7531*x + 178.7531*y) - 0.64237034)/log(118.25013*z)
+Heatup_Gruppe_2;Heatup;1;lateral;1.275;1.274;0.001;52.67;z*(235.46028774142 - 226.2631*sin(94.84733*z))*(log(Abs(t_skaliert - 0.008400222)) + 4.4695945) - 4.3102508
+Cooldown_Gruppe_1;Cooldown;2;lateral;1.214;1.215;0.001;73.15;log(Abs(sin(14.919703/r) + 0.24100412)) - 2.0717418
+Heatup_Gruppe_3;Heatup;2;top;1.065;1.065;0.0;8.39;Abs(r*(-62.428936 + 0.019043116/t_skaliert) + sin(r*(-128.45537)) + 2.5935485)*(-2.0058284)
+Heatup_Gruppe_3;Heatup;1;lateral;0.87;0.873;0.003;37.53;-1.447155 + log(-0.00028673897*t_skaliert*(0.012666908 - t_skaliert)/((z - 0.029139923)*(z - 0.028206881)) + 0.53624517)/(t_skaliert + 0.16444893)
+Cooldown_Gruppe_1;Cooldown;3;bottom;0.754;0.757;0.003;;0.4614134/(t_skaliert - 1*(-0.1104979))
+Cooldown_Gruppe_1;Cooldown;1;bottom;0.428;0.429;0.001;76.99;0.5386177*log(Abs(sin(19.464958*exp(r))))
+Cooldown_Gruppe_1;Cooldown;2;top;0.291;0.291;0.0;;(r*(-68.864685) + sin(-(-141.58098)*r + 0.18689111/r))/exp(sin(t_skaliert)) + 3.121274 - 0.05786487/r
+Cooldown_Gruppe_1;Cooldown;1;lateral;0.16;0.16;0.0;;t_skaliert - 1*1.4251803 + 0.002631537*exp(-5.12002070945977*re(t_skaliert))/Abs(z - 0.028794589) + 0.19531171/(z/0.0014215906 - 1*0.7063761)
+Cooldown_Gruppe_1;Cooldown;3;top;0.152;0.157;0.005;;(y + 0.006840514)*(-0.0008631766)*sin((y - 0.20882809)*exp(x)/0.006840728)/((t_skaliert*0.28933802 + z)*(z - 1*0.008327358))
+Cooldown_Gruppe_1;Cooldown;1;top;0.142;0.142;0.0;;-r + (0.039300486 - 0.003119218/(r - 0.12995593))/(r + t_skaliert + 0.02779756)
+Cooldown_Gruppe_1;Cooldown;2;bottom;0.063;0.063;0.0;;(0.6533403 - sin(2.0176015*t_skaliert))*(t_skaliert + log(sin(43.84366*z + 0.000349608)) - 0.5083526)
