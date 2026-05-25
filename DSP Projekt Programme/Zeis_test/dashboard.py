@@ -35,10 +35,35 @@ def zeige_steuerung(f_etl, f_filter, f_train, f_eval, f_repair):
         print("Starte Schritt 2...")
         f_filter()
 
-    @out.capture(clear_output=True)
+    # --- NEU: DAS SUB-MENÜ FÜR DAS TRAINING ---
     def run_train(b):
-        print("Starte Schritt 3...")
-        f_train()
+        with out:
+            out.clear_output()
+            print("⚙️ TRAINING KONFIGURIEREN")
+            print("-" * 30)
+            
+            # Eingabefelder erstellen
+            w_iter = widgets.IntText(value=1000, description='Iterationen:')
+            w_gruppe = widgets.Text(value='', description='Ziel-Gruppe:', placeholder='z.B. Heatup_Gruppe_1 (Leer = Alle)')
+            
+            btn_start = widgets.Button(description="Jetzt Trainieren", button_style='success', icon='play')
+            
+            # Was passiert, wenn man im Sub-Menü auf "Jetzt Trainieren" drückt:
+            def starte_jetzt(b2):
+                with out:
+                    out.clear_output()
+                    # Prüfen ob Text eingegeben wurde (sonst None)
+                    gruppe_val = w_gruppe.value.strip() if w_gruppe.value.strip() != "" else None
+                    
+                    print(f"🚀 Starte Training! (Iterationen: {w_iter.value} | Gruppe: {gruppe_val or 'Alle Modelle'})")
+                    print("Bitte warten...\n")
+                    # Übergebe die Parameter an deine Notebook-Funktion
+                    f_train(ziel_gruppe=gruppe_val, max_iterations=w_iter.value)
+            
+            btn_start.on_click(starte_jetzt)
+            
+            # Sub-Menü anzeigen
+            display(widgets.VBox([w_iter, w_gruppe, btn_start]))
 
     @out.capture(clear_output=True)
     def run_eval(b):
