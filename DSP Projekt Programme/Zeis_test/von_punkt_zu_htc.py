@@ -31,7 +31,7 @@ def berechne_htc_fuer_koordinate(x_meter, y_meter, zeit_sekunden, case_id='Case_
     return htc
 
 # ==========================================
-# 🚀 BEISPIEL-ABFRAGEN IN DEINEM NEUEN CODE
+#  BEISPIEL-ABFRAGEN IN DEINEM NEUEN CODE
 # ==========================================
 
 # Beispiel 1: Ein Punkt mitten im Laserstrahl (X=0, Y=0) nach 150 Sekunden

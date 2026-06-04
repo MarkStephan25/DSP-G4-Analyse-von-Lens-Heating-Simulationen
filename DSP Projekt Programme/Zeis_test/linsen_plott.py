@@ -6,7 +6,7 @@ def plotte_symmetrie_check(ziel_linse='1', ziel_case='Case_1'):
     print(f"Lade Daten für Symmetrie-Check (Linse: {ziel_linse} | Case: {ziel_case})...")
     df = pd.read_parquet("linsen_daten_clean.parquet")
 
-    # 🔥 DYNAMISCHER FILTER: Nur noch Linse und Case! (Phase ist an Case gebunden)
+    #  DYNAMISCHER FILTER: Nur noch Linse und Case! (Phase ist an Case gebunden)
     maske = (
         (df['Linsen_art'].astype(str) == str(ziel_linse)) & 
         (df['case_id'] == str(ziel_case))
@@ -19,7 +19,7 @@ def plotte_symmetrie_check(ziel_linse='1', ziel_case='Case_1'):
 
     df_gefiltert['HTC_abs'] = np.abs(df_gefiltert['HTC'])
 
-    # 🔥 INFO: Wir lesen die Phase einfach aus den gefilterten Daten aus, um sie im Titel anzuzeigen
+
     erkannte_phase = df_gefiltert['Phase'].iloc[0]
     phasen_name = "Heatup (1)" if erkannte_phase == 1 else "Cooldown (0)"
 
@@ -33,7 +33,7 @@ def plotte_symmetrie_check(ziel_linse='1', ziel_case='Case_1'):
     df_zeit['Winkel'] = np.arctan2(df_zeit['y'], df_zeit['x']) * (180 / np.pi)
 
     # ========================================================
-    # 🎨 4 PLOTS EINRICHTEN (2x2 Raster)
+    #  4 PLOTS EINRICHTEN (2x2 Raster)
     # ========================================================
     fig, axes = plt.subplots(2, 2, figsize=(16, 14))
     fig.suptitle(f"Symmetrie-Check | Linse {ziel_linse} | {ziel_case} | {phasen_name} (T={max_time:.0f}s)", 
@@ -99,7 +99,7 @@ def plotte_symmetrie_check(ziel_linse='1', ziel_case='Case_1'):
     plt.show()
 
 # =====================================================================
-# 🎮 HIER STEUERST DU DEN PLOT!
+#  HIER STEUERST DU DEN PLOT!
 # =====================================================================
 if __name__ == "__main__":
     plotte_symmetrie_check(ziel_linse='3', ziel_case='Case1')

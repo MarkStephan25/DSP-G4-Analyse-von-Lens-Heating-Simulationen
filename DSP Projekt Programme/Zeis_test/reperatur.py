@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import sympy
 import os
-import glob       # 🔥 HIER IST DER FIX: glob importiert!
+import glob      
 import gc
 from scipy.optimize import curve_fit
 from pysr import PySRRegressor
@@ -20,14 +20,14 @@ def base_time_curve(t, a, b, c, d, e):
 # HAUPTFUNKTION: SPEZIAL-TRAINING
 # ==============================================================================
 def repariere_modell(ziel_linse, ziel_surface, ziel_case, phase=1, filter_faktor=5.0, erlaube_z_fuer_support=True):
-    print(f"\n🚀 STARTE REPARATUR-TRAINING FÜR:")
+    print(f"\nSTARTE REPARATUR-TRAINING FÜR:")
     print(f"Linse: {ziel_linse} | Surface: {ziel_surface} | Case: {ziel_case}")
     print(f"-> Median-Filter Faktor: {filter_faktor}")
     print(f"-> Z-Achse für Support erlaubt: {erlaube_z_fuer_support}")
     print("-" * 50)
 
     # 1. Daten laden und sofort radikal filtern (Memory Saving)
-    print("📖 Lade CFD-Daten...")
+    print("Lade CFD-Daten...")
     cols = ['Phase', 'Linsen_art', 'Surface', 'case_id', 'Time', 'x', 'y', 'z', 'HTC']
     df = pd.read_parquet("linsen_daten_clean.parquet", columns=cols)
     df['HTC_abs'] = np.abs(df['HTC'])
@@ -41,7 +41,7 @@ def repariere_modell(ziel_linse, ziel_surface, ziel_case, phase=1, filter_faktor
     gc.collect()
 
     if df_train.empty:
-        print("❌ Keine Daten für diese Kombination gefunden. Abbruch!")
+        print("Keine Daten für diese Kombination gefunden. Abbruch!")
         return
 
     # 2. Ausreißer filtern (Mit dynamischem Faktor!)
@@ -52,10 +52,10 @@ def repariere_modell(ziel_linse, ziel_surface, ziel_case, phase=1, filter_faktor
     print(f"-> {len(df_train)} saubere Datenpunkte für das Training übrig.")
 
     # 3. Geometrie-Features berechnen (Das 3D Upgrade)
-    print("📐 Berechne 3D-Features...")
+    print("Berechne 3D-Features...")
     df_train['t_skaliert'] = df_train['Time'] / 20000.0
 
-    # 🔥 FIX: Sollen wir dem Support die Z-Achse erlauben?
+    # FIX: Sollen wir dem Support die Z-Achse erlauben?
     if ziel_surface == 'support' and not erlaube_z_fuer_support:
         df_train['r_skaliert'] = 0.0
         df_train['z_skaliert'] = 0.0
@@ -72,7 +72,7 @@ def repariere_modell(ziel_linse, ziel_surface, ziel_case, phase=1, filter_faktor
     df_train['z_t_interaction'] = df_train['z_norm'] * df_train['t_skaliert']
 
     # 4. Base Curve (Zeit) fitten
-    print("📈 Fitte zeitliche Basis-Kurve...")
+    print("Fitte zeitliche Basis-Kurve...")
     t_vals = df_train['t_skaliert'].values
     htc_vals = df_train['HTC_abs'].values
 
@@ -82,7 +82,7 @@ def repariere_modell(ziel_linse, ziel_surface, ziel_case, phase=1, filter_faktor
     try:
         base_params, _ = curve_fit(base_time_curve, t_vals, htc_vals, p0=p0, maxfev=5000)
     except Exception as e:
-        print(f"❌ Fehler beim Curve-Fit: {e}. Verwende Fallback-Werte.")
+        print(f"Fehler beim Curve-Fit: {e}. Verwende Fallback-Werte.")
         base_params = [np.mean(htc_vals), 0, 0, 0, 0]
 
     # Berechne, was noch fehlt (Der Multiplikator für PySR)
@@ -93,7 +93,7 @@ def repariere_modell(ziel_linse, ziel_surface, ziel_case, phase=1, filter_faktor
     y_pysr = np.clip(y_pysr, -10.0, 10.0)
 
     # 5. PySR Symbolic Regression
-    print("\n🧠 Starte PySR KI-Training (Das kann ein paar Minuten dauern)...")
+    print("\nStarte PySR KI-Training (Das kann ein paar Minuten dauern)...")
     
     # Nur die 6 räumlichen Features an PySR übergeben (Zeit ist ja schon in der Base-Curve)
     X_pysr = df_train[['r_norm', 'z_norm', 'r_norm_sq', 'z_norm_sq', 'r_t_interaction', 'z_t_interaction']]
@@ -114,11 +114,11 @@ def repariere_modell(ziel_linse, ziel_surface, ziel_case, phase=1, filter_faktor
     model.fit(X_pysr, y_pysr)
     
     beste_formel = str(model.sympy())
-    print(f"\n✅ PySR hat die Formel gefunden!")
+    print(f"\nPySR hat die Formel gefunden!")
     print(f"🧬 Multiplikator: {beste_formel}")
 
     # 6. Formel abspeichern (Der intelligente Registry-Manager)
-    print("\n💾 Update die Registry und lösche alte Versionen...")
+    print("\nUpdate die Registry und lösche alte Versionen...")
     params_str = "|".join(map(str, base_params))
     
     neue_zeile = pd.DataFrame([{
@@ -138,7 +138,6 @@ def repariere_modell(ziel_linse, ziel_surface, ziel_case, phase=1, filter_faktor
         dfs = [pd.read_csv(d, sep=";") for d in alte_dateien]
         df_master = pd.concat(dfs, ignore_index=True)
         
-        # 🔥 DIE ALTE FORMEL GEZIELT LÖSCHEN
         maske_alt = (df_master['Phase'] == phase) & \
                     (df_master['Linse'].astype(str) == str(ziel_linse)) & \
                     (df_master['Surface'] == ziel_surface) & \
@@ -151,7 +150,7 @@ def repariere_modell(ziel_linse, ziel_surface, ziel_case, phase=1, filter_faktor
         # Neue Formel anhängen
         df_master = pd.concat([df_master, neue_zeile], ignore_index=True)
         
-        # 🧹 Aufräumen: Lösche das Dateichaos im Ordner
+        # Aufräumen: Lösche das Dateichaos im Ordner
         for d in alte_dateien:
             try:
                 os.remove(d)
@@ -166,17 +165,17 @@ def repariere_modell(ziel_linse, ziel_surface, ziel_case, phase=1, filter_faktor
     master_name = "Formel_Registry_Master.csv"
     df_master.to_csv(master_name, sep=";", index=False)
     
-    print(f"🎉 Registry erfolgreich geupdatet! Dein Ordner ist aufgeräumt.")
+    print(f"Registry erfolgreich geupdatet! Dein Ordner ist aufgeräumt.")
     print(f"Alle Formeln liegen jetzt sicher in: {master_name}")
 
 
 if __name__ == "__main__":
     
     # ==============================================================================
-    # 🎛️ DEIN STEUERPULT FÜR REPARATUREN 🎛️
+    # DEIN STEUERPULT FÜR REPARATUREN 
     # ==============================================================================
     
-    # 🛠️ Reparatur 1: Linse 2 Support (Problem: Jackson-Pollock Rauschen)
+    # Reparatur 1: Linse 2 Support (Problem: Jackson-Pollock Rauschen)
     # Wir setzen den Filter auf 7.0 und schalten die Z-Achse an!
     repariere_modell(
         ziel_linse='2',
@@ -186,7 +185,7 @@ if __name__ == "__main__":
         erlaube_z_fuer_support=True    # Erlaubt der KI zu lernen, dass es oben heißer ist!
     )
     
-    # 🛠️ Reparatur 2: Linse 3 Lateral (Problem: Hotspot an der Kante)
+    # Reparatur 2: Linse 3 Lateral (Problem: Hotspot an der Kante)
     # Filter leicht lockern, damit die 434 HTC voll getroffen werden.
     repariere_modell(
         ziel_linse='3',

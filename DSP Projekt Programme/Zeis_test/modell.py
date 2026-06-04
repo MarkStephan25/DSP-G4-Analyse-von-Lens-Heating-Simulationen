@@ -11,7 +11,7 @@ def double_exp(t, a, b, c, d, e):
 
 def master_pipeline_dynamic(ziel_linse=None, ziel_surface=None, ziel_case=None):
     
-    print(f"🚀 Starte UNIVERSELLE 3D-Pipeline mit LIVE-SPEICHERUNG...")
+    print(f"Starte UNIVERSELLE 3D-Pipeline mit LIVE-SPEICHERUNG...")
     print(f"Filter -> Linse: {ziel_linse or 'ALLE'} | Surface: {ziel_surface or 'ALLE'} | Case: {ziel_case or 'ALLE'}")
     
     # --------------------------------------------------------
@@ -29,7 +29,7 @@ def master_pipeline_dynamic(ziel_linse=None, ziel_surface=None, ziel_case=None):
     # --------------------------------------------------------
     spalten = ['Phase', 'Linse', 'Surface', 'Case', 'Base_Params', 'Base_Formel', 'PySR_Multiplikator']
     pd.DataFrame(columns=spalten).to_csv(dateiname, index=False, sep=";")
-    print(f"📁 Datei '{dateiname}' erstellt. Starte Live-Streaming...\n")
+    print(f"Datei '{dateiname}' erstellt. Starte Live-Streaming...\n")
     
     df = pd.read_parquet("linsen_daten_clean.parquet")
     
@@ -41,13 +41,13 @@ def master_pipeline_dynamic(ziel_linse=None, ziel_surface=None, ziel_case=None):
         
     df = df[maske].copy()
     if df.empty:
-        print(f"❌ Keine Daten gefunden. Beende.")
+        print(f"Keine Daten gefunden. Beende.")
         return
 
     df['t_skaliert'] = df['Time'] / 20000.0
     df['HTC_abs'] = np.abs(df['HTC'])
     
-    # 🔥 NEU: Globales Maximum für jede Phase/Linse-Kombination berechnen (für die 2%-Schwelle)
+    # Globales Maximum für jede Phase/Linse-Kombination berechnen (für die 2%-Schwelle)
     max_werte = df.groupby(['Phase', 'Linsen_art'])['HTC_abs'].max().to_dict()
     
     gruppen = df.groupby(['Phase', 'Linsen_art', 'Surface', 'case_id'])
@@ -55,16 +55,16 @@ def master_pipeline_dynamic(ziel_linse=None, ziel_surface=None, ziel_case=None):
     for (phase, linse, surface, case_id), df_sub in gruppen:
         phase_name = "Heatup (1)" if phase == 1 else "Cooldown (0)"
         print(f"\n==================================================")
-        print(f"🔄 Bearbeite: Linse {linse} | {surface} | Case: {case_id} | Phase: {phase_name}")
+        print(f"Bearbeite: Linse {linse} | {surface} | Case: {case_id} | Phase: {phase_name}")
         
         # --------------------------------------------------------
-        # 🔥 DYNAMISCHER COLD-SKIP (2%-Regel)
+        # DYNAMISCHER COLD-SKIP (2%-Regel)
         # --------------------------------------------------------
         globales_max = max_werte.get((phase, linse), 100.0) 
         dynamische_schwelle = globales_max * 0.02  # Alles unter 2% des Maximums ist "kalt"
         
         if df_sub['HTC_abs'].max() < dynamische_schwelle:
-            print(f"🥶 Max HTC ({df_sub['HTC_abs'].max():.1f}) unter der 2%-Schwelle ({dynamische_schwelle:.1f}). Überspringe PySR...")
+            print(f" Max HTC ({df_sub['HTC_abs'].max():.1f}) unter der 2%-Schwelle ({dynamische_schwelle:.1f}). Überspringe PySR...")
             
             # Fehlerfreies Erstellen der Zeile als Konstante
             neue_zeile = pd.DataFrame([{
@@ -74,7 +74,7 @@ def master_pipeline_dynamic(ziel_linse=None, ziel_surface=None, ziel_case=None):
                 'PySR_Multiplikator': "1.0"
             }])
             neue_zeile.to_csv(dateiname, mode='a', header=False, index=False, sep=";")
-            print("      💾 [Erfolgreich als Konstante live gespeichert]")
+            print("       [Erfolgreich als Konstante live gespeichert]")
             continue
 
         # --------------------------------------------------------
@@ -137,7 +137,7 @@ def master_pipeline_dynamic(ziel_linse=None, ziel_surface=None, ziel_case=None):
         df_train['z_norm_sq'] = df_train['z_norm']**2
         df_train['r_t_interaction'] = df_train['r_norm'] * df_train['t_skaliert']
         
-        # 🔥 NEU: Die dynamische Weiche für Lateral vs. Top/Bottom
+        # NEU: Die dynamische Weiche für Lateral vs. Top/Bottom
         if surface == 'lateral':
             df_train['z_t_interaction'] = df_train['z_norm'] * df_train['t_skaliert']
             feature_liste = ['r_norm', 'z_norm', 't_skaliert', 'r_norm_sq', 'z_norm_sq', 'r_t_interaction', 'z_t_interaction']
@@ -167,7 +167,7 @@ def master_pipeline_dynamic(ziel_linse=None, ziel_surface=None, ziel_case=None):
         try:
             modell.fit(X, y, weights=df_train['HTC_abs'].values)
             formel_mult = str(modell.sympy()) 
-            print(f"✅ Erfolgreich trainiert!")
+            print(f" Erfolgreich trainiert!")
             
             neue_zeile = pd.DataFrame([{
                 'Phase': phase, 'Linse': linse, 'Surface': surface, 'Case': case_id,
@@ -175,13 +175,12 @@ def master_pipeline_dynamic(ziel_linse=None, ziel_surface=None, ziel_case=None):
                 'Base_Formel': formel_base, 'PySR_Multiplikator': formel_mult
             }])
             neue_zeile.to_csv(dateiname, mode='a', header=False, index=False, sep=";")
-            print("      💾 [Erfolgreich live gespeichert]")
+            print("       [Erfolgreich live gespeichert]")
             
         except Exception as e:
             print(f"❌ Fehler bei PySR: {e}")
 
-    print(f"\n🎉 Alles fertig. '{dateiname}' ist komplett!")
-
+    print(f"\n Alles fertig. '{dateiname}' ist komplett!")
 
 if __name__ == "__main__":
     master_pipeline_dynamic(ziel_linse='3',ziel_case='Case1')

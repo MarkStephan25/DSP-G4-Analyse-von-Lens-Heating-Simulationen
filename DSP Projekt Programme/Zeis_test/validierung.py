@@ -13,11 +13,11 @@ warnings.filterwarnings('ignore')
 # ==============================================================================
 class DigitalerZwillingBatch:
     def __init__(self, ziel_linse=None, ziel_surface=None, ziel_case=None):
-        print("📖 Lade Formel-Registry-Dateien...")
+        print("Lade Formel-Registry-Dateien...")
         
         dateien = glob.glob("Formel_Registry_*.csv")
         if not dateien: 
-            raise FileNotFoundError("❌ Keine CSV-Dateien gefunden!")
+            raise FileNotFoundError("Keine CSV-Dateien gefunden!")
         
         dfs = [pd.read_csv(d, sep=";") for d in dateien]
         self.registry = pd.concat(dfs, ignore_index=True)
@@ -31,7 +31,7 @@ class DigitalerZwillingBatch:
             self.registry = self.registry[self.registry['Case'] == ziel_case]
             
         if self.registry.empty:
-            raise ValueError("❌ Für diese Filterkombination gibt es keine Formeln in den CSV-Dateien!")
+            raise ValueError("Für diese Filterkombination gibt es keine Formeln in den CSV-Dateien!")
 
         self.formel_cache = {}
         
@@ -39,7 +39,7 @@ class DigitalerZwillingBatch:
         self.t_sym, self.r_n_sym, self.z_n_sym, self.r_sq_sym, self.z_sq_sym, self.r_t_sym, self.z_t_sym = sympy.symbols(
             't_skaliert r_norm z_norm r_norm_sq z_norm_sq r_t_interaction z_t_interaction'
         )
-        print(f"✅ {len(self.registry)} relevante Formeln für diesen Lauf gefunden!\n")
+        print(f"{len(self.registry)} relevante Formeln für diesen Lauf gefunden!\n")
 
     def hole_formel(self, phase, linse, surface, case_id):
         key = (phase, str(linse), surface, case_id)
@@ -67,7 +67,7 @@ class DigitalerZwillingBatch:
 
         (a, b, c, d, e), mult_func = formel_data
         
-        # 🔥 PERFORMANCE-UPGRADE: Reine NumPy Arrays statt Pandas Spalten!
+        # PERFORMANCE-UPGRADE: Reine NumPy Arrays statt Pandas Spalten!
         t = df_sub['Time'].values / 20000.0
         
         if surface == 'support':
@@ -98,14 +98,14 @@ class DigitalerZwillingBatch:
             multiplikator = mult_func(t, r_n, z_n, r_sq, z_sq, i, z_t)
             return htc_base * multiplikator
         except Exception as err:
-            print(f"\n❌ Fehler bei Berechnung: {err}")
+            print(f"\nFehler bei Berechnung: {err}")
             return np.full(len(t), np.nan)
 
 # ==============================================================================
 # MAIN: AUTOMATISCHE VALIDIERUNG ALLER MODELLE
 # ==============================================================================
 def validiere_alles(ziel_linse=None, ziel_surface=None, ziel_case=None):
-    print("🚀 Starte globale Modell-Validierung (High-Speed Memory Optimized)...\n")
+    print("Starte globale Modell-Validierung (High-Speed Memory Optimized)...\n")
     
     zwilling = DigitalerZwillingBatch(ziel_linse, ziel_surface, ziel_case)
     
@@ -116,7 +116,7 @@ def validiere_alles(ziel_linse=None, ziel_surface=None, ziel_case=None):
     df_cfd['HTC_abs'] = np.abs(df_cfd['HTC'])
     df_cfd['Linsen_art'] = df_cfd['Linsen_art'].astype(str)
     
-    # 🔥 SPEICHER-RETTUNG: Wirf sofort weg, was wir nicht prüfen wollen!
+    # SPEICHER-RETTUNG: Wirf sofort weg, was wir nicht prüfen wollen!
     print("-> Filtere unnötige CFD-Daten sofort aus dem Arbeitsspeicher...")
     if ziel_linse:
         df_cfd = df_cfd[df_cfd['Linsen_art'] == str(ziel_linse)]
@@ -127,7 +127,7 @@ def validiere_alles(ziel_linse=None, ziel_surface=None, ziel_case=None):
         
     gc.collect() # PC aufräumen lassen
     
-    # 🔥 TURBO-SUCHE: Erstelle das Inhaltsverzeichnis (Hash-Map)
+    # TURBO-SUCHE: Erstelle das Inhaltsverzeichnis (Hash-Map)
     print("-> Erstelle High-Speed Suchindex...")
     cfd_index = df_cfd.groupby(['Phase', 'Linsen_art', 'Surface', 'case_id'])
     
@@ -135,7 +135,7 @@ def validiere_alles(ziel_linse=None, ziel_surface=None, ziel_case=None):
     ergebnisse = []
     total_modelle = len(kombinationen)
     
-    print(f"\n⚙️ Starte Auswertung von {total_modelle} Modellen...\n")
+    print(f"\nStarte Auswertung von {total_modelle} Modellen...\n")
 
     for idx, row in kombinationen.iterrows():
         phase = row['Phase']
@@ -149,7 +149,7 @@ def validiere_alles(ziel_linse=None, ziel_surface=None, ziel_case=None):
         try:
             df_sub = cfd_index.get_group((phase, linse, surface, case)).copy()
         except KeyError:
-            print("❌ Keine CFD Daten für diese Kombination.")
+            print("Keine CFD Daten für diese Kombination.")
             continue
             
         # Median-Filterung
@@ -162,7 +162,7 @@ def validiere_alles(ziel_linse=None, ziel_surface=None, ziel_case=None):
         df_sub = df_sub.dropna(subset=['HTC_Pred', 'HTC_abs'])
         
         if df_sub.empty:
-            print("❌ Fehler bei Vorhersage (Leeres Dataframe).")
+            print("Fehler bei Vorhersage (Leeres Dataframe).")
             continue
             
         # Metriken berechnen
@@ -177,7 +177,7 @@ def validiere_alles(ziel_linse=None, ziel_surface=None, ziel_case=None):
         ss_tot = np.sum((y_true - np.mean(y_true))**2)
         r2 = 1 - (ss_res / ss_tot) if ss_tot != 0 else 0.0
         
-        print(f"✅ R²: {r2:+.3f} | RMSE: {rmse:<5.1f} | MAE: {mae:<5.2f}")
+        print(f"R²: {r2:+.3f} | RMSE: {rmse:<5.1f} | MAE: {mae:<5.2f}")
         
         ergebnisse.append({
             'Phase': phase,
@@ -208,27 +208,23 @@ def validiere_alles(ziel_linse=None, ziel_surface=None, ziel_case=None):
         df_report.to_csv(dateiname, index=False, sep=";")
         
         print("\n" + "="*60)
-        print("🏆 REPORT ZUSAMMENFASSUNG")
+        print("REPORT ZUSAMMENFASSUNG")
         print("="*60)
         print(f"Durchschnittliches R² über alle Modelle: {df_report['R_Quadrat'].mean():.4f}")
         print(f"Durchschnittlicher MAE (Fehler in HTC):  {df_report['MAE'].mean():.2f}")
         
-        print("\n🌟 TOP 3 MODELLE (Die Besten):")
+        print("\nTOP 3 MODELLE (Die Besten):")
         print(df_report[['Case', 'Surface', 'Phase', 'R_Quadrat', 'MAE']].head(3).to_string(index=False))
         
-        print("\n⚠️ FLOP 3 MODELLE (Hier gibt es noch Probleme):")
+        print("\nFLOP 3 MODELLE (Hier gibt es noch Probleme):")
         print(df_report[['Case', 'Surface', 'Phase', 'R_Quadrat', 'MAE']].tail(3).to_string(index=False))
         
-        print(f"\n📂 Kompletter Report gespeichert als: {dateiname}")
+        print(f"\nKompletter Report gespeichert als: {dateiname}")
     else:
-        print("\n❌ Es konnten keine Modelle validiert werden.")
+        print("\nEs konnten keine Modelle validiert werden.")
 
 if __name__ == "__main__":
-    
-    # 🎛️ DEIN STEUERPULT 🎛️
-    # Ändere diese Werte, um blitzschnell nur bestimmte Dinge zu testen.
-    # Setze einen Wert auf None, wenn du ihn nicht filtern möchtest.
-    
+
     validiere_alles(
         ziel_linse=None,      # z.B. '1', '2' oder None
         ziel_case='Case1',   # z.B. 'Case1', 'Case2' oder None

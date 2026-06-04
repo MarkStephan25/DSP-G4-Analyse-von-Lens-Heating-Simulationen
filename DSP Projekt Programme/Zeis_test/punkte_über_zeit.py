@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import warnings
 
-# 🔥 Wir importieren deinen fertigen Zwilling einfach aus der anderen Datei!
 from validierung import DigitalerZwillingBatch 
 
 warnings.filterwarnings('ignore')
@@ -24,7 +23,7 @@ def plot_htc_zeitverlauf_mit_modell(ziel_linse='3', ziel_surface='top', ziel_cas
     df_sub = df[maske].copy()
     
     if df_sub.empty:
-        print("❌ Keine Daten für diese Kombination gefunden!")
+        print("Keine Daten für diese Kombination gefunden!")
         return
         
     df_sub['HTC_abs'] = np.abs(df_sub['HTC'])
@@ -32,7 +31,7 @@ def plot_htc_zeitverlauf_mit_modell(ziel_linse='3', ziel_surface='top', ziel_cas
     # --------------------------------------------------------
     # 2. Modell-Vorhersage berechnen
     # --------------------------------------------------------
-    print("🤖 Berechne KI-Vorhersagen für diesen Case...")
+    print("Berechne KI-Vorhersagen für diesen Case...")
     zwilling = DigitalerZwillingBatch()
     df_sub['HTC_Pred'] = zwilling.berechne_vorhersage_schnell(
         df_sub, phase=ziel_phase, linse=str(ziel_linse), surface=ziel_surface, case_id=ziel_case
