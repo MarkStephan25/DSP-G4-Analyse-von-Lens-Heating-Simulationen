@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import warnings
 
-# 🔥 DER GENIALE SCHACHZUG: Wir importieren den fehlerfreien Zwilling!
+#  DER GENIALE SCHACHZUG: Wir importieren den fehlerfreien Zwilling!
 from validierung import DigitalerZwillingBatch 
 
 warnings.filterwarnings('ignore')
@@ -21,8 +21,8 @@ def plotte_diagnose(test_linse='1', test_surface='top', test_phase=1, test_case=
     
     if df_sub.empty:
         verfuegbare_cases = df[(df['Surface'] == test_surface) & (df['Linsen_art'].astype(str) == str(test_linse))]['case_id'].unique()
-        print(f"❌ Keine Daten für {test_case} gefunden!")
-        print(f"💡 Gefundene Cases für diese Linse: {list(verfuegbare_cases)}")
+        print(f" Keine Daten für {test_case} gefunden!")
+        print(f" Gefundene Cases für diese Linse: {list(verfuegbare_cases)}")
         return
         
     df_sub['HTC_abs'] = np.abs(df_sub['HTC'])
@@ -40,7 +40,7 @@ def plotte_diagnose(test_linse='1', test_surface='top', test_phase=1, test_case=
         z_max = df_sauber['z'].max()
         df_sauber['z_skaliert'] = np.abs(z_max - df_sauber['z']) * 1000.0
     
-    # 🔥 WIR NUTZEN DEN IMPORTIERTEN ZWILLING
+    #  WIR NUTZEN DEN IMPORTIERTEN ZWILLING
     zwilling = DigitalerZwillingBatch()
 
     print("-> Berechne Modell-Vorhersagen für gesamten Datensatz...")
@@ -50,13 +50,13 @@ def plotte_diagnose(test_linse='1', test_surface='top', test_phase=1, test_case=
     df_sauber = df_sauber.dropna(subset=['HTC_Pred'])
     
     if df_sauber.empty:
-        print("❌ Konnte keine Vorhersage berechnen. Gibt es ein Modell in der CSV für diesen Case?")
+        print(" Konnte keine Vorhersage berechnen. Gibt es ein Modell in der CSV für diesen Case?")
         return
         
     df_sauber['Residuum'] = df_sauber['HTC_abs'] - df_sauber['HTC_Pred']
 
     # ========================================================
-    # 🎨 VISUALISIERUNG: 2x2 Raster (4 Plots)
+    #  VISUALISIERUNG: 2x2 Raster (4 Plots)
     # ========================================================
     print("-> Erstelle Dashboard...")
     sns.set_theme(style="whitegrid", context="notebook", font_scale=1.1)
